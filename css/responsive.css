@@ -3,26 +3,52 @@
    ========================================= */
 
 @media (max-width: 768px) {
+  /* --- Global --- */
+  .section {
+    padding: var(--space-64) 0;
+  }
+  
+  /* Hide the luxury side frames on mobile so content has room */
+  body::before, body::after {
+    display: none;
+  }
+
+  /* --- Hero Mobile --- */
   .hero {
-    padding-top: 100px;
-    padding-bottom: 80px;
+    padding-top: 120px;
+    padding-bottom: 60px;
     text-align: center;
+    min-height: auto;
+  }
+  
+  .hero__container {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 40px;
+  }
+  
+  .hero__name::after {
+    margin: 16px auto; /* Center the accent line */
+  }
+
+  .hero__badges {
+    justify-content: center;
   }
   
   .hero__actions {
     justify-content: center;
   }
   
-  .hero__stats {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .hero__scroll-indicator {
-    display: none; /* Hide on mobile to save vertical space */
+  .hero__portrait-wrapper {
+    max-width: 300px;
+    margin: 0 auto;
   }
 
   /* --- Navbar Mobile --- */
+  .navbar {
+    padding: 0 16px;
+  }
+  
   .navbar__menu {
     position: fixed;
     top: 80px;
@@ -31,7 +57,8 @@
     height: 0;
     overflow: hidden;
     flex-direction: column;
-    background: rgba(250, 250, 250, 0.98);
+    /* Updated for Dark Theme */
+    background: rgba(15, 23, 42, 0.98);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 0;
@@ -41,9 +68,9 @@
   }
 
   .navbar__menu.is-active {
-    height: auto;
+    height: 300px;
     padding: var(--space-24) 0;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   }
 
   .navbar__menu li {
@@ -53,6 +80,7 @@
 
   .navbar__link {
     font-size: 1.125rem;
+    color: var(--clr-text);
   }
 
   .navbar__toggle {
@@ -69,4 +97,15 @@
   .navbar__toggle.is-active span:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
   }
+  
+  /* --- Components --- */
+  .certifications-banner {
+    padding: var(--space-24) var(--space-16);
+  }
+  
+  .contact-details .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
+

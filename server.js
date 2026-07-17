@@ -164,6 +164,27 @@ app.post('/api/testimonials', async (req, res) => {
   }
 });
 
+// 5b. TESTIMONIALS DELETE
+app.delete('/api/testimonials/:id', authenticateToken, async (req, res) => {
+  try {
+    await db.query(`DELETE FROM "testimonials" WHERE id = $1`, [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 5c. TESTIMONIALS EDIT
+app.put('/api/testimonials/:id', authenticateToken, async (req, res) => {
+  const { feedback } = req.body;
+  try {
+    await db.query(`UPDATE "testimonials" SET feedback = $1 WHERE id = $2`, [feedback, req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // 6. DYNAMIC SECTION UPSERT
 app.post('/api/dynamic', authenticateToken, async (req, res) => {
   const { id, category, htmlContent, order_idx } = req.body;
