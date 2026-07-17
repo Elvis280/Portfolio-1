@@ -1,0 +1,20 @@
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+.animate-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo);
+}
+
+.animate-fade-in {
+  opacity: 0;
+  transition: opacity 1.5s var(--ease-out-expo);
+}
+
+/* Added dynamically via JS IntersectionObserver */
+.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

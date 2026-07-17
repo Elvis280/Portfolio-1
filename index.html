@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shivam Dubey | Home Educator</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  
+  <!-- NAVBAR -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar__logo">Shivam Dubey</a>
+      <ul class="navbar__menu">
+        <li><a href="#hero" class="navbar__link">About</a></li>
+        <li><a href="#subjects" class="navbar__link">Subjects</a></li>
+        <li><a href="#experience" class="navbar__link">Experience</a></li>
+        <li><a href="#contact" class="navbar__link">Contact</a></li>
+      </ul>
+      <button class="navbar__toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+      <div class="hero__bg-graphic" aria-hidden="true"></div>
+      <div class="hero__container">
+        <div class="hero__content">
+          <h1 class="hero__name animate-up" data-editable="heroName">Shivam Dubey</h1>
+          <h2 class="hero__title animate-up" data-editable="heroTitle">Home Educator · Mathematics and Psychology</h2>
+          <p class="hero__bio animate-up" data-editable="heroBio">
+            A dedicated and passionate in-home educator with 7 years of teaching experience. Specialising in Mathematics for Classes 6–10 and Psychology for Classes 11–12. Committed to building strong conceptual foundations and nurturing the mental well-being of every student through personalised attention.
+          </p>
+          <div class="hero__badges animate-up">
+            <span class="badge" data-editable="heroBadge1">B.Ed</span>
+            <span class="badge" data-editable="heroBadge2">M.A — Education</span>
+            <span class="badge" data-editable="heroBadge3">B.A — Education and Sociology</span>
+            <span class="badge" data-editable="heroBadge4">CTET Qualified</span>
+            <span class="badge" data-editable="heroBadge5">7 Years Experience</span>
+          </div>
+          <div class="hero__actions animate-up">
+            <a href="#contact" class="btn btn--primary" data-editable="heroBtn1Text" data-editable-link="heroBtn1Link" style="position: relative;">Get in Touch</a>
+            <a href="#subjects" class="btn btn--secondary" data-editable="heroBtn2Text" data-editable-link="heroBtn2Link" style="position: relative;">Explore Subjects</a>
+          </div>
+        </div>
+        <div class="hero__visual animate-fade-in">
+          <div class="hero__portrait-wrapper">
+            <img src="assets/images/shivam-portrait.jpg" alt="Portrait of Shivam Dubey" class="hero__portrait" id="heroPortrait">
+            
+            <!-- Admin Photo Edit (Hidden by default) -->
+            <label for="photoUpload" class="admin-photo-edit" id="adminPhotoEdit" style="display: none;" title="Update Photo">
+              <i data-lucide="pencil" style="width: 20px; height: 20px; color: var(--clr-primary);"></i>
+              <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUBJECTS SECTION -->
+    <section class="section bg-alt" id="subjects">
+      <div class="container">
+        <div class="section__header animate-up">
+          <h3 class="section__subtitle">What I Teach</h3>
+          <h2 class="section__title">Subjects & Classes</h2>
+        </div>
+        <div class="carousel-wrapper animate-up" id="subjectCarouselWrapper">
+          <div class="carousel-track" id="subjectsGrid">
+            <!-- Math Card -->
+            <div class="card card--subject animate-up">
+              <div class="card__icon"><i data-lucide="calculator"></i></div>
+              <h3 class="card__title" data-editable="mathTitle">Mathematics</h3>
+              <p class="card__meta" data-editable="mathMeta">Classes 6 · 7 · 8 · 9 · 10</p>
+              <p class="card__desc" data-editable="mathDesc">Building strong fundamentals in numbers, algebra, geometry, and problem-solving. Focus on concept clarity and making Maths enjoyable and fear-free for every student.</p>
+              <span class="badge badge--dark" data-editable="mathBadge">7 Years Experience</span>
+            </div>
+            <!-- Psych Card -->
+            <div class="card card--subject animate-up">
+              <div class="card__icon"><i data-lucide="brain"></i></div>
+              <h3 class="card__title" data-editable="psychTitle">Psychology</h3>
+              <p class="card__meta" data-editable="psychMeta">Classes 11 · 12</p>
+              <p class="card__desc" data-editable="psychDesc">Covering CBSE, ICSE Psychology curriculum including human behaviour, mental processes, development, and research methods. Real-life examples to make topics relatable and exam-ready.</p>
+              <span class="badge badge--dark" data-editable="psychBadge">1.5 Years Experience</span>
+            </div>
+          </div>
+          
+          <div class="carousel-controls" id="subjectCarouselControls" style="display: none;">
+            <button class="carousel-btn" id="subjectPrev" aria-label="Previous Subjects">←</button>
+            <button class="carousel-btn" id="subjectNext" aria-label="Next Subjects">→</button>
+          </div>
+        </div>
+        </div>
+        
+        <!-- Admin Subject Add (Hidden by default) -->
+        <div class="admin-add-container mt-24 animate-up" id="adminSubjectAdd" style="display: none; text-align: center;">
+          <button class="btn btn--secondary btn--small" id="openAddSubjectBtn">+ Add Subject</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE TIMELINE -->
+    <section class="section" id="experience">
+      <div class="container">
+        <div class="section__header animate-up">
+          <h3 class="section__subtitle">Career Journey</h3>
+          <h2 class="section__title">Teaching Experience</h2>
+        </div>
+        <div class="timeline animate-up" id="experienceTimeline">
+          <!-- Dynamically populated from backend -->
+        </div>
+        
+        <!-- Experience View More -->
+        <div class="exp-actions mt-24 animate-up" style="text-align: center;">
+          <button id="expViewMoreBtn" class="btn btn--secondary" style="display: none;">View More</button>
+        </div>
+        
+        <!-- Admin Experience Add (Hidden by default) -->
+        <div class="admin-add-container mt-24 animate-up" id="adminExpAdd" style="display: none; text-align: center;">
+          <button class="btn btn--secondary btn--small" id="openAddExpBtn">+ Add Experience</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section__header animate-up">
+          <h3 class="section__subtitle">Competencies</h3>
+          <h2 class="section__title">Teaching Skills</h2>
+        </div>
+        <div class="grid-2 gap-32">
+          <div class="skill animate-up">
+            <div class="skill__header">
+              <span class="skill__name" data-editable="skillName1">Mathematics Teaching (6–10)</span>
+              <span class="skill__level" data-editable="skillLevel1">Expert · 7 years</span>
+            </div>
+            <div class="skill__bar">
+              <div class="skill__fill" style="width: 97%;"></div>
+            </div>
+          </div>
+          <div class="skill animate-up">
+            <div class="skill__header">
+              <span class="skill__name" data-editable="skillName2">Psychology Teaching (11–12)</span>
+              <span class="skill__level" data-editable="skillLevel2">Proficient · 1.5 years</span>
+            </div>
+            <div class="skill__bar">
+              <div class="skill__fill" style="width: 75%;"></div>
+            </div>
+          </div>
+          <div class="skill animate-up">
+            <div class="skill__header">
+              <span class="skill__name" data-editable="skillName3">Personalised Learning</span>
+              <span class="skill__level" data-editable="skillLevel3">Expert</span>
+            </div>
+            <div class="skill__bar">
+              <div class="skill__fill" style="width: 95%;"></div>
+            </div>
+          </div>
+          <div class="skill animate-up">
+            <div class="skill__header">
+              <span class="skill__name" data-editable="skillName4">Student Doubt Clearing</span>
+              <span class="skill__level" data-editable="skillLevel4">Expert</span>
+            </div>
+            <div class="skill__bar">
+              <div class="skill__fill" style="width: 93%;"></div>
+            </div>
+          </div>
+          <div class="skill animate-up">
+            <div class="skill__header">
+              <span class="skill__name" data-editable="skillName5">Exam Preparation</span>
+              <span class="skill__level" data-editable="skillLevel5">Advanced</span>
+            </div>
+            <div class="skill__bar">
+              <div class="skill__fill" style="width: 90%;"></div>
+            </div>
+          </div>
+          <div class="skill animate-up">
+            <div class="skill__header">
+              <span class="skill__name" data-editable="skillName6">Parent Communication</span>
+              <span class="skill__level" data-editable="skillLevel6">Advanced</span>
+            </div>
+            <div class="skill__bar">
+              <div class="skill__fill" style="width: 92%;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Admin Skill Add (Hidden by default) -->
+        <div class="admin-add-container mt-24 animate-up" id="adminSkillAdd" style="display: none; text-align: center;">
+          <button class="btn btn--secondary btn--small" id="openAddSkillBtn">+ Add Skill</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUALIFICATIONS & CREDENTIALS -->
+    <section class="section bg-alt" id="qualifications">
+      <div class="container">
+        <div class="section__header animate-up">
+          <h3 class="section__subtitle">Academic Background</h3>
+          <h2 class="section__title">Qualifications & Certifications</h2>
+        </div>
+        
+        <div class="grid-3 gap-24 mb-48" id="qualificationsGrid1">
+          <!-- Dynamically populated from backend (Items 1-3) -->
+        </div>
+
+        <div class="certifications-banner card--highlight animate-up mt-48">
+          <h4 class="cert-title" data-editable="certTitle1">CTET Qualified — Paper 1 and Paper 2</h4>
+          <p class="cert-desc" data-editable="certDesc1">Central Teacher Eligibility Test (CTET) — qualified both Paper 1 (Classes 1–5) and Paper 2 (Classes 6–8), conducted by CBSE. A national-level government certification reflecting strong subject knowledge, pedagogy, and child development understanding.</p>
+          <span class="badge badge--primary" data-editable="certBadge1">Government Certified · CBSE</span>
+        </div>
+
+        <div class="grid-2 gap-24 mt-24" id="qualificationsGrid2">
+          <!-- Dynamically populated from backend (Items 4+) -->
+        </div>
+        
+        <div class="qual-actions mt-24 animate-up" style="text-align: center;">
+          <button id="qualViewMoreBtn" class="btn btn--secondary" style="display: none;">View More</button>
+        </div>
+        
+        <div class="admin-add-container mt-24 animate-up" id="adminQualAdd" style="display: none; text-align: center;">
+          <button class="btn btn--secondary btn--small" id="openAddQualBtn">+ Add Qualification</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section" id="testimonials">
+      <div class="container">
+        <div class="section__header animate-up">
+          <h3 class="section__subtitle">What Parents Say</h3>
+          <h2 class="section__title">Testimonials</h2>
+        </div>
+        <div class="carousel-wrapper animate-up">
+          <div class="carousel-track" id="testimonialsGrid">
+            <div class="card card--testimonial">
+              <div class="stars"><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i></div>
+              <p class="quote" data-editable="testQuote1">"My son used to struggle badly in Maths. After joining Shivam Sir's tuition, his confidence has improved so much. He now solves problems on his own!"</p>
+              <p class="author" data-editable="testAuthor1">— Jyoti Jaiswal, Parent · Class 10 & 8 (Maths)</p>
+            </div>
+            <div class="card card--testimonial">
+              <div class="stars"><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i></div>
+              <p class="quote" data-editable="testQuote2">"Very patient teacher. Explains every concept clearly and makes sure the child understands before moving on. Highly recommended for home tuition."</p>
+              <p class="author" data-editable="testAuthor2">— Anant Yadav, Parent · Class 10 (Maths)</p>
+            </div>
+            <div class="card card--testimonial">
+              <div class="stars"><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i></div>
+              <p class="quote" data-editable="testQuote3">"Shivam Sir's Psychology classes are excellent. My daughter scored 88 in her boards. His notes and real-life examples made the subject very easy to understand."</p>
+              <p class="author" data-editable="testAuthor3">— Ramesh Ojha, Parent · Class 12 (Psychology)</p>
+            </div>
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-btn" id="carouselPrev" aria-label="Previous Testimonials">←</button>
+            <button class="carousel-btn" id="carouselNext" aria-label="Next Testimonials">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY (Visual Evidence) -->
+    <section class="section bg-alt" id="gallery">
+      <div class="container">
+        <div class="section__header animate-up">
+          <h3 class="section__subtitle">Visual Evidence</h3>
+          <h2 class="section__title">Parent Visual Feedback</h2>
+        </div>
+        <div class="gallery-grid animate-up" id="galleryGridTarget">
+          <!-- The python script extracted image_1.jpeg etc. We will link a few here -->
+          <div class="gallery-item"><img src="assets/images/image_1.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
+          <div class="gallery-item"><img src="assets/images/image_2.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
+          <div class="gallery-item"><img src="assets/images/image_3.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
+          <div class="gallery-item"><img src="assets/images/image_4.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
+          <div class="gallery-item"><img src="assets/images/image_5.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
+          
+          <!-- Admin Gallery Add (Hidden by default) -->
+          <div class="gallery-item gallery-item--add" id="adminGalleryAdd" style="display: none;">
+            <label for="galleryUpload" class="gallery-add-label">
+              <span>+ Add Image</span>
+              <input type="file" id="galleryUpload" accept="image/*" style="display: none;" multiple>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Gallery View More -->
+        <div class="gallery-actions mt-24 animate-up" style="text-align: center;">
+          <button id="galleryViewMoreBtn" class="btn btn--secondary" style="display: none;">View More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section__header animate-up">
+          <h3 class="section__subtitle">Common Questions</h3>
+          <h2 class="section__title">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-accordion animate-up" id="faqAccordion">
+          <!-- Dynamically populated from backend -->
+        </div>
+        
+        <div class="faq-actions mt-24 animate-up" style="text-align: center;">
+          <button id="faqViewMoreBtn" class="btn btn--secondary" style="display: none;">View More</button>
+        </div>
+        
+        <div class="admin-add-container mt-24 animate-up" id="adminFaqAdd" style="display: none; text-align: center;">
+          <button class="btn btn--secondary btn--small" id="openAddFaqBtn">+ Add FAQ</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT & FEEDBACK -->
+    <section class="section bg-alt" id="contact">
+      <div class="container grid-2 gap-64">
+        <div class="contact-info animate-up">
+          <h2 class="section__title" data-editable="contactTitle">Get in Touch</h2>
+          <p class="contact-desc" data-editable="contactDesc">Ready to build a strong academic foundation? Contact me to discuss how we can help your child succeed.</p>
+          
+          <div class="contact-details mt-24">
+            <p style="margin-bottom: 8px;"><strong data-editable="contactPhoneLabel">Phone / WhatsApp:</strong> <span data-editable="contactPhone">+91 96213 90785</span></p>
+            <p style="margin-bottom: 8px;"><strong data-editable="contactEmailLabel">Email:</strong> <span data-editable="contactEmail">shivam12dubey10@gmail.com</span></p>
+            <p style="margin-bottom: 8px;"><strong data-editable="contactLocLabel">Location:</strong> <span data-editable="contactLoc">Lucknow, Uttar Pradesh</span></p>
+            <p style="margin-bottom: 8px;"><strong data-editable="contactAvailLabel">Availability:</strong> <span data-editable="contactAvail">Mon - Sat • 8:00 AM - 7:00 PM</span></p>
+            <p style="margin-bottom: 8px;"><strong data-editable="contactFormatLabel">Format:</strong> <span data-editable="contactFormat">In-Home Tuition & Small Groups</span></p>
+            <div class="mt-24" style="display: flex; gap: 16px; flex-wrap: wrap;">
+              <a href="mailto:shivam12dubey10@gmail.com" class="btn btn--secondary" data-editable="contactEmailText" data-editable-link="contactEmailLink" style="position: relative;">Email Me</a>
+              <a href="tel:+919621390785" class="btn btn--secondary" data-editable="contactCallText" data-editable-link="contactCallLink" style="position: relative;">Call Me</a>
+              <a href="https://wa.me/919621390785" target="_blank" class="btn btn--primary" data-editable="contactWhatsappText" data-editable-link="contactWhatsappLink" style="position: relative; background-color: #25D366; border-color: #25D366; color: white;">WhatsApp Me</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card--form animate-up">
+          <h3 class="card__title" data-editable="feedbackTitle">Share Your Feedback</h3>
+          <form class="form" id="feedbackForm">
+            <div class="form-group">
+              <label for="name" data-editable="feedbackNameLabel">Your Name</label>
+              <input type="text" id="name" class="form-input" placeholder="Parent / Guardian" required>
+            </div>
+            <div class="form-group">
+              <label for="student" data-editable="feedbackStudentLabel">Student's Name</label>
+              <input type="text" id="student" class="form-input" placeholder="Student's name" required>
+            </div>
+            <div class="form-group">
+              <label for="grade" data-editable="feedbackGradeLabel">Grade / Class</label>
+              <select id="grade" class="form-input" required>
+                <option value="" disabled selected>Select Class</option>
+                <option value="Class 6">Class 6</option>
+                <option value="Class 7">Class 7</option>
+                <option value="Class 8">Class 8</option>
+                <option value="Class 9">Class 9</option>
+                <option value="Class 10">Class 10</option>
+                <option value="Class 11">Class 11</option>
+                <option value="Class 12">Class 12</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="subject" data-editable="feedbackSubjectLabel">Subject</label>
+              <select id="subject" class="form-input" required>
+                <option value="" disabled selected>Select Subject</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Psychology">Psychology</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-editable="feedbackRatingLabel">Rating</label>
+              <div class="stars-input" id="starRating" style="display: flex; gap: 4px; font-size: 1.5rem; cursor: pointer;">
+                <span data-value="1"><i data-lucide="star" class="star-icon"></i></span>
+                <span data-value="2"><i data-lucide="star" class="star-icon"></i></span>
+                <span data-value="3"><i data-lucide="star" class="star-icon"></i></span>
+                <span data-value="4"><i data-lucide="star" class="star-icon"></i></span>
+                <span data-value="5"><i data-lucide="star" class="star-icon"></i></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="feedback" data-editable="feedbackDescLabel">Your Feedback</label>
+              <textarea id="feedback" class="form-input" rows="4" placeholder="How has your child improved?" required></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary" style="width: 100%;"><span data-editable="feedbackBtnTxt">Submit Feedback</span></button>
+            <p id="feedbackSuccess" class="form-success">Thank you for your feedback!</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col">
+          <p class="footer__logo">Shivam Dubey</p>
+          <p class="footer__text">A dedicated home educator specialising in Mathematics and Psychology. Building strong conceptual foundations and nurturing mental well-being for over 7 years.</p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__links">
+            <li><a href="#hero">About Me</a></li>
+            <li><a href="#subjects">Subjects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Contact</h4>
+          <ul class="footer__links">
+            <li><i data-lucide="map-pin" class="icon-sm"></i> Lucknow, UP, India</li>
+            <li><a href="mailto:contact@example.com"><i data-lucide="mail" class="icon-sm"></i> contact@example.com</a></li>
+            <li><a href="tel:+919876543210"><i data-lucide="phone" class="icon-sm"></i> +91 98765 43210</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Socials</h4>
+          <div class="footer__socials">
+            <a href="#" class="social-link" data-editable="socialLinkedinText" data-editable-link="socialLinkedinLink" style="position: relative;"><i data-lucide="linkedin" class="icon-sm"></i> LinkedIn</a>
+            <a href="#" class="social-link" data-editable="socialInstagramText" data-editable-link="socialInstagramLink" style="position: relative;"><i data-lucide="instagram" class="icon-sm"></i> Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__text">© <span id="currentYear">2026</span> Shivam Dubey. All rights reserved.</p>
+        <p class="footer__text"><a href="#" id="adminLoginLink" style="opacity: 0.5;">Admin Login</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Admin Mode Trigger -->
+  <button id="adminTrigger" class="admin-trigger" aria-label="Enable Admin Mode" title="Admin Login"></button>
+  
+  <!-- Admin Controls (Hidden by default) -->
+  <div id="adminPanel" class="admin-panel">
+    <p class="admin-panel__title">Admin Mode Active</p>
+    <button id="adminToggleEdit" class="btn btn--secondary btn--small">Enable Text Editor</button>
+    <button id="adminSaveContent" class="btn btn--primary btn--small" style="display:none;">Save Changes</button>
+    <button id="adminUpdatePwdBtn" class="btn btn--secondary btn--small">Update Password</button>
+    <button id="adminExit" class="btn btn--secondary btn--small">Exit</button>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <dialog id="adminLoginModal" class="modal">
+    <div class="modal__content">
+      <h3 class="card__title">Admin Login</h3>
+      <p style="margin-bottom: 1rem; font-size: 0.875rem; color: var(--clr-muted);">Enter password to manage portfolio content.</p>
+      <input type="password" id="adminPassword" class="form-input" placeholder="Password" style="margin-bottom: 1rem;">
+      <div style="display: flex; gap: 1rem;">
+        <button id="adminLoginBtn" class="btn btn--primary" style="flex: 1;">Login</button>
+        <button id="adminCancelBtn" class="btn btn--secondary" style="flex: 1;">Cancel</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Update Password Modal -->
+  <dialog id="updatePasswordModal" class="modal">
+    <div class="modal__content animate-up">
+      <h3 class="card__title">Update Admin Password</h3>
+      <form id="updatePasswordForm" class="form mt-16">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Current Password</label>
+          <input type="password" id="oldPassword" class="form-input" required placeholder="Current Password" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label style="display: block; margin-bottom: 4px; font-size: 0.9rem;">New Password</label>
+          <input type="password" id="newPassword" class="form-input" required placeholder="New Password" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Confirm New Password</label>
+          <input type="password" id="confirmPassword" class="form-input" required placeholder="Confirm New Password" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <button type="submit" class="btn btn--primary" style="flex: 1; padding: 10px;">Update</button>
+          <button type="button" class="btn btn--secondary" id="updatePwdCancel" style="flex: 1; padding: 10px;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add Subject Modal -->
+  <dialog class="modal" id="addSubjectModal">
+    <div class="modal__content animate-up">
+      <h3 style="color: var(--clr-primary);">Add New Subject</h3>
+      <form id="addSubjectForm" class="form mt-16">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="subIcon" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Icon (Emoji)</label>
+          <input type="text" id="subIcon" class="form-control" required value="book-open" style="width: 100%; padding: 8px;" placeholder="Lucide icon name (e.g. book-open, calculator)">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="subTitle" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Subject Name</label>
+          <input type="text" id="subTitle" class="form-control" required placeholder="e.g. Science" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="subMeta" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Classes</label>
+          <input type="text" id="subMeta" class="form-control" required placeholder="e.g. Classes 8 - 10" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="subDesc" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Description</label>
+          <textarea id="subDesc" class="form-control" rows="3" required placeholder="Brief description..." style="width: 100%; padding: 8px; resize: vertical;"></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="subBadge" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Experience Badge</label>
+          <input type="text" id="subBadge" class="form-control" required placeholder="e.g. 5 Years Experience" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <button type="submit" class="btn btn--primary" style="flex: 1; padding: 10px;">Add Subject</button>
+          <button type="button" class="btn btn--secondary" id="addSubjectCancel" style="flex: 1; padding: 10px;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add Skill Modal -->
+  <dialog class="modal" id="addSkillModal">
+    <div class="modal__content animate-up">
+      <h3 style="color: var(--clr-primary);">Add New Teaching Skill</h3>
+      <form id="addSkillForm" class="form mt-16">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="skillTitle" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Skill Name</label>
+          <input type="text" id="skillTitle" class="form-control" required placeholder="e.g. Lesson Planning" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="skillLevel" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Level Description</label>
+          <input type="text" id="skillLevel" class="form-control" required placeholder="e.g. Expert" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="skillPercent" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Fill Percentage (1-100)</label>
+          <input type="number" id="skillPercent" class="form-control" required min="1" max="100" placeholder="e.g. 90" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="display: flex; gap: 16px; margin-top: 16px;">
+          <button type="submit" class="btn btn--primary" style="flex: 1; padding: 10px;">Add Skill</button>
+          <button type="button" class="btn btn--secondary" id="addSkillCancel" style="flex: 1; padding: 10px;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add Experience Modal -->
+  <dialog class="modal" id="addExpModal">
+    <div class="modal__content animate-up">
+      <h3 style="color: var(--clr-primary);">Add New Experience</h3>
+      <form id="addExpForm" class="form mt-16">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="expTitle" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Job Title</label>
+          <input type="text" id="expTitle" class="form-control" required placeholder="e.g. Mathematics Teacher" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="expMeta" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Location & Dates</label>
+          <input type="text" id="expMeta" class="form-control" required placeholder="e.g. Lucknow | 2018 – Present" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="expDesc" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Description</label>
+          <textarea id="expDesc" class="form-control" rows="3" required placeholder="Brief description of your role..." style="width: 100%; padding: 8px; resize: vertical;"></textarea>
+        </div>
+        <div style="display: flex; gap: 16px; margin-top: 16px;">
+          <button type="submit" class="btn btn--primary" style="flex: 1; padding: 10px;">Add Experience</button>
+          <button type="button" class="btn btn--secondary" id="addExpCancel" style="flex: 1; padding: 10px;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add Qualification Modal -->
+  <dialog class="modal" id="addQualModal">
+    <div class="modal__content animate-up">
+      <h3 style="color: var(--clr-primary);">Add Qualification</h3>
+      <form id="addQualForm" class="form mt-16">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="qualIcon" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Icon (Emoji)</label>
+          <input type="text" id="qualIcon" class="form-control" required value="graduation-cap" style="width: 100%; padding: 8px;" placeholder="Lucide icon name (e.g. graduation-cap)">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="qualTitle" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Title</label>
+          <input type="text" id="qualTitle" class="form-control" required placeholder="e.g. M.Sc. Physics" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="qualDesc" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Description</label>
+          <textarea id="qualDesc" class="form-control" rows="3" required placeholder="Description..." style="width: 100%; padding: 8px; resize: vertical;"></textarea>
+        </div>
+        <div style="display: flex; gap: 16px; margin-top: 16px;">
+          <button type="submit" class="btn btn--primary" style="flex: 1; padding: 10px;">Add</button>
+          <button type="button" class="btn btn--secondary" id="addQualCancel" style="flex: 1; padding: 10px;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add FAQ Modal -->
+  <dialog class="modal" id="addFaqModal">
+    <div class="modal__content animate-up">
+      <h3 style="color: var(--clr-primary);">Add FAQ</h3>
+      <form id="addFaqForm" class="form mt-16">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="faqQ" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Question</label>
+          <input type="text" id="faqQ" class="form-control" required placeholder="Question" style="width: 100%; padding: 8px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="faqA" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Answer</label>
+          <textarea id="faqA" class="form-control" rows="3" required placeholder="Answer" style="width: 100%; padding: 8px; resize: vertical;"></textarea>
+        </div>
+        <div style="display: flex; gap: 16px; margin-top: 16px;">
+          <button type="submit" class="btn btn--primary" style="flex: 1; padding: 10px;">Add</button>
+          <button type="button" class="btn btn--secondary" id="addFaqCancel" style="flex: 1; padding: 10px;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- JavaScript -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
