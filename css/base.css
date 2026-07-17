@@ -1,0 +1,105 @@
+/* =========================================
+   GLOBAL VARIABLES & RESET
+   ========================================= */
+
+:root {
+  /* Color Palette */
+  --clr-primary: #1E3A5F;
+  --clr-accent: #D4AF37;
+  --clr-bg: #FAFAFA;
+  --clr-surface: #FFFFFF;
+  --clr-surface-alt: #F5F5F5;
+  --clr-border: #E5E7EB;
+  --clr-text: #111827;
+  --clr-muted: #6B7280;
+
+  /* Typography */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Spacing System */
+  --space-8: 0.5rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-48: 3rem;
+  --space-64: 4rem;
+  --space-96: 6rem;
+  --space-128: 8rem;
+
+  /* Border Radius */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+
+  /* Animation Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.4s var(--ease-out-expo);
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Premium Luxury Vertical Frame --- */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 24px;
+  width: 8px;
+  border-left: 1px solid rgba(212, 175, 55, 0.3);
+  border-right: 1px solid rgba(212, 175, 55, 0.9);
+  box-shadow: 10px 0 30px rgba(212, 175, 55, 0.15);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 24px;
+  width: 8px;
+  border-right: 1px solid rgba(212, 175, 55, 0.3);
+  border-left: 1px solid rgba(212, 175, 55, 0.9);
+  box-shadow: -10px 0 30px rgba(212, 175, 55, 0.15);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--clr-primary);
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
