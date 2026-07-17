@@ -5,7 +5,7 @@
 :root {
   /* Color Palette */
   --clr-bg: #0F172A;            /* Background */
-  --clr-surface-alt: #111827;   /* Secondary Background */
+  --clr-surface-alt: #080D17;   /* Secondary Background (Darker for contrast) */
   --clr-surface: #1E293B;       /* Surface/Card */
   --clr-primary: #3B82F6;       /* Metallic Blue */
   --clr-accent: #60A5FA;        /* Accent Blue */

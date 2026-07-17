@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.className = 'card card--testimonial animate-up';
     card.style.opacity = '1'; 
     card.style.transform = 'translateY(0)';
+    card.style.position = 'relative'; // For absolute admin buttons
     
     const studentStr = data.student ? ` (Parent of ${data.student})` : '';
     const detailsStr = (data.grade && data.subject) ? ` · ${data.grade} (${data.subject})` : '';
@@ -129,9 +130,69 @@ document.addEventListener('DOMContentLoaded', () => {
       <p class="quote">"${data.feedback}"</p>
       <p class="author">— ${data.name}${studentStr}${detailsStr}</p>
     `;
+
+    // Admin controls for editing/deleting testimonials
+    const adminControls = document.createElement('div');
+    adminControls.className = 'admin-card-del'; // Reusing this class for display logic
+    adminControls.style.display = isAdmin ? 'flex' : 'none';
+    adminControls.style.position = 'absolute';
+    adminControls.style.top = '10px';
+    adminControls.style.right = '10px';
+    adminControls.style.gap = '8px';
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'btn btn--secondary btn--small';
+    editBtn.innerHTML = '✎';
+    editBtn.style.padding = '4px 8px';
+    editBtn.onclick = () => window.editTestimonial(data.id, data.feedback);
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'admin-delete-btn';
+    delBtn.innerHTML = '×';
+    delBtn.style.position = 'static'; // Override default absolute
+    delBtn.onclick = () => window.deleteTestimonial(data.id);
+
+    adminControls.appendChild(editBtn);
+    adminControls.appendChild(delBtn);
+    card.appendChild(adminControls);
+
     testimonialsGrid.prepend(card);
     testimonialsGrid.scrollTo({ left: 0, behavior: 'smooth' });
   }
+
+  // Global functions for testimonial actions
+  window.editTestimonial = async (id, currentText) => {
+    const newText = prompt("Edit Testimonial:", currentText);
+    if (newText !== null && newText.trim() !== "") {
+      try {
+        await fetch(`${API_BASE}/testimonials/${id}`, {
+          method: 'PUT',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('adminToken')}`
+          },
+          body: JSON.stringify({ feedback: newText.trim() })
+        });
+        loadDataFromBackend(); // Refresh all
+      } catch (err) {
+        alert("Failed to update testimonial.");
+      }
+    }
+  };
+
+  window.deleteTestimonial = async (id) => {
+    if (confirm("Are you sure you want to delete this testimonial?")) {
+      try {
+        await fetch(`${API_BASE}/testimonials/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${sessionStorage.getItem('adminToken')}` }
+        });
+        loadDataFromBackend(); // Refresh all
+      } catch (err) {
+        alert("Failed to delete testimonial.");
+      }
+    }
+  };
 
   /* --- Carousel Logic --- */
   const carouselPrev = document.getElementById('carouselPrev');
