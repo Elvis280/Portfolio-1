@@ -1,67 +1,38 @@
 require('dotenv').config();
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const { Pool } = require('pg');
 
-const dbPath = process.env.DB_PATH || path.resolve(__dirname, 'portfolio.db');
-const db = new sqlite3.Database(dbPath, (err) => {
+const PG_URL = process.env.DATABASE_URL;
+
+if (!PG_URL) {
+  console.error("❌ ERROR: Missing DATABASE_URL environment variable.");
+  process.exit(1);
+}
+
+const pool = new Pool({
+  connectionString: PG_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+// Test connection and initialize default admin if not exists
+pool.connect(async (err, client, release) => {
   if (err) {
-    console.error('Error opening database', err.message);
-  } else {
-    console.log('Connected to the SQLite database.');
-    
-    // Initialize Tables
-    db.serialize(() => {
-      // Key-Value table for textual content
-      db.run(`CREATE TABLE IF NOT EXISTS textContent (
-        key TEXT PRIMARY KEY,
-        value TEXT
-      )`);
-
-      // Gallery table
-      db.run(`CREATE TABLE IF NOT EXISTS gallery (
-        id TEXT PRIMARY KEY,
-        src TEXT,
-        order_idx INTEGER
-      )`);
-
-      // Testimonials table
-      db.run(`CREATE TABLE IF NOT EXISTS testimonials (
-        id TEXT PRIMARY KEY,
-        name TEXT,
-        student TEXT,
-        grade TEXT,
-        subject TEXT,
-        rating INTEGER,
-        feedback TEXT,
-        timestamp INTEGER
-      )`);
-      
-      // Dynamic Sections table (for Subjects, Qualifications, etc. added by admin)
-      // category could be 'subject', 'qualification', 'experience', 'faq'
-      db.run(`CREATE TABLE IF NOT EXISTS dynamicSections (
-        id TEXT PRIMARY KEY,
-        category TEXT,
-        htmlContent TEXT,
-        order_idx INTEGER
-      )`);
-
-      // Config table for secure settings (like hashed password)
-      db.run(`CREATE TABLE IF NOT EXISTS config (
-        key TEXT PRIMARY KEY,
-        value TEXT
-      )`);
-
-      // Initialize default admin password
-      const bcrypt = require('bcryptjs');
-      db.get(`SELECT value FROM config WHERE key = 'admin_password'`, (err, row) => {
-        if (!row && !err) {
-          const hash = bcrypt.hashSync('admin123', 10);
-          db.run(`INSERT INTO config (key, value) VALUES ('admin_password', ?)`, [hash]);
-          console.log('Default admin password set to "admin123"');
-        }
-      });
-    });
+    return console.error('Error acquiring client', err.stack);
+  }
+  console.log('Connected to the PostgreSQL database.');
+  
+  try {
+    const bcrypt = require('bcryptjs');
+    const res = await client.query(`SELECT value FROM "config" WHERE key = 'admin_password'`);
+    if (res.rows.length === 0) {
+      const hash = bcrypt.hashSync('admin123', 10);
+      await client.query(`INSERT INTO "config" (key, value) VALUES ($1, $2)`, ['admin_password', hash]);
+      console.log('Default admin password set to "admin123"');
+    }
+  } catch (err) {
+    console.error('Error checking/setting admin password:', err.stack);
+  } finally {
+    release();
   }
 });
 
-module.exports = db;
+module.exports = pool;

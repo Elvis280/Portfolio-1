@@ -66,7 +66,7 @@
             
             <!-- Admin Photo Edit (Hidden by default) -->
             <label for="photoUpload" class="admin-photo-edit" id="adminPhotoEdit" style="display: none;" title="Update Photo">
-              ✏️
+              <i data-lucide="pencil" style="width: 20px; height: 20px; color: var(--clr-primary);"></i>
               <input type="file" id="photoUpload" accept="image/*" style="display: none;">
             </label>
           </div>
@@ -85,7 +85,7 @@
           <div class="carousel-track" id="subjectsGrid">
             <!-- Math Card -->
             <div class="card card--subject animate-up">
-              <div class="card__icon">📐</div>
+              <div class="card__icon"><i data-lucide="calculator"></i></div>
               <h3 class="card__title" data-editable="mathTitle">Mathematics</h3>
               <p class="card__meta" data-editable="mathMeta">Classes 6 · 7 · 8 · 9 · 10</p>
               <p class="card__desc" data-editable="mathDesc">Building strong fundamentals in numbers, algebra, geometry, and problem-solving. Focus on concept clarity and making Maths enjoyable and fear-free for every student.</p>
@@ -93,7 +93,7 @@
             </div>
             <!-- Psych Card -->
             <div class="card card--subject animate-up">
-              <div class="card__icon">🧠</div>
+              <div class="card__icon"><i data-lucide="brain"></i></div>
               <h3 class="card__title" data-editable="psychTitle">Psychology</h3>
               <p class="card__meta" data-editable="psychMeta">Classes 11 · 12</p>
               <p class="card__desc" data-editable="psychDesc">Covering CBSE, ICSE Psychology curriculum including human behaviour, mental processes, development, and research methods. Real-life examples to make topics relatable and exam-ready.</p>
@@ -251,17 +251,17 @@
         <div class="carousel-wrapper animate-up">
           <div class="carousel-track" id="testimonialsGrid">
             <div class="card card--testimonial">
-              <div class="stars">★★★★★</div>
+              <div class="stars"><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i></div>
               <p class="quote" data-editable="testQuote1">"My son used to struggle badly in Maths. After joining Shivam Sir's tuition, his confidence has improved so much. He now solves problems on his own!"</p>
               <p class="author" data-editable="testAuthor1">— Jyoti Jaiswal, Parent · Class 10 & 8 (Maths)</p>
             </div>
             <div class="card card--testimonial">
-              <div class="stars">★★★★★</div>
+              <div class="stars"><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i></div>
               <p class="quote" data-editable="testQuote2">"Very patient teacher. Explains every concept clearly and makes sure the child understands before moving on. Highly recommended for home tuition."</p>
               <p class="author" data-editable="testAuthor2">— Anant Yadav, Parent · Class 10 (Maths)</p>
             </div>
             <div class="card card--testimonial">
-              <div class="stars">★★★★★</div>
+              <div class="stars"><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i><i data-lucide="star" class="star-filled"></i></div>
               <p class="quote" data-editable="testQuote3">"Shivam Sir's Psychology classes are excellent. My daughter scored 88 in her boards. His notes and real-life examples made the subject very easy to understand."</p>
               <p class="author" data-editable="testAuthor3">— Ramesh Ojha, Parent · Class 12 (Psychology)</p>
             </div>
@@ -381,12 +381,12 @@
             </div>
             <div class="form-group">
               <label data-editable="feedbackRatingLabel">Rating</label>
-              <div class="star-rating" id="starRating">
-                <span data-value="1">★</span>
-                <span data-value="2">★</span>
-                <span data-value="3">★</span>
-                <span data-value="4">★</span>
-                <span data-value="5">★</span>
+              <div class="stars-input" id="starRating" style="display: flex; gap: 4px; font-size: 1.5rem; cursor: pointer;">
+                <span data-value="1"><i data-lucide="star" class="star-icon"></i></span>
+                <span data-value="2"><i data-lucide="star" class="star-icon"></i></span>
+                <span data-value="3"><i data-lucide="star" class="star-icon"></i></span>
+                <span data-value="4"><i data-lucide="star" class="star-icon"></i></span>
+                <span data-value="5"><i data-lucide="star" class="star-icon"></i></span>
               </div>
             </div>
             <div class="form-group">
@@ -402,15 +402,40 @@
   </main>
 
   <footer class="footer">
-    <div class="container footer__container">
-      <div class="footer__brand">
-        <p class="footer__logo">Shivam Dubey</p>
-        <p class="footer__text">© <span id="currentYear">2026</span> Shivam Dubey. Home Educator in Lucknow.</p>
-        <p class="footer__text mt-24"><a href="#" id="adminLoginLink" style="opacity: 0.5;">Admin Login</a></p>
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col">
+          <p class="footer__logo">Shivam Dubey</p>
+          <p class="footer__text">A dedicated home educator specialising in Mathematics and Psychology. Building strong conceptual foundations and nurturing mental well-being for over 7 years.</p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__links">
+            <li><a href="#hero">About Me</a></li>
+            <li><a href="#subjects">Subjects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Contact</h4>
+          <ul class="footer__links">
+            <li><i data-lucide="map-pin" class="icon-sm"></i> Lucknow, UP, India</li>
+            <li><a href="mailto:contact@example.com"><i data-lucide="mail" class="icon-sm"></i> contact@example.com</a></li>
+            <li><a href="tel:+919876543210"><i data-lucide="phone" class="icon-sm"></i> +91 98765 43210</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Socials</h4>
+          <div class="footer__socials">
+            <a href="#" class="social-link" data-editable="socialLinkedinText" data-editable-link="socialLinkedinLink" style="position: relative;"><i data-lucide="linkedin" class="icon-sm"></i> LinkedIn</a>
+            <a href="#" class="social-link" data-editable="socialInstagramText" data-editable-link="socialInstagramLink" style="position: relative;"><i data-lucide="instagram" class="icon-sm"></i> Instagram</a>
+          </div>
+        </div>
       </div>
-      <div class="footer__socials">
-        <a href="#" class="social-link" data-editable="socialLinkedinText" data-editable-link="socialLinkedinLink" style="position: relative;">LinkedIn</a>
-        <a href="#" class="social-link" data-editable="socialInstagramText" data-editable-link="socialInstagramLink" style="position: relative;">Instagram</a>
+      <div class="footer__bottom">
+        <p class="footer__text">© <span id="currentYear">2026</span> Shivam Dubey. All rights reserved.</p>
+        <p class="footer__text"><a href="#" id="adminLoginLink" style="opacity: 0.5;">Admin Login</a></p>
       </div>
     </div>
   </footer>
@@ -472,7 +497,7 @@
       <form id="addSubjectForm" class="form mt-16">
         <div class="form-group" style="margin-bottom: 12px;">
           <label for="subIcon" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Icon (Emoji)</label>
-          <input type="text" id="subIcon" class="form-control" required value="📖" style="width: 100%; padding: 8px;">
+          <input type="text" id="subIcon" class="form-control" required value="book-open" style="width: 100%; padding: 8px;" placeholder="Lucide icon name (e.g. book-open, calculator)">
         </div>
         <div class="form-group" style="margin-bottom: 12px;">
           <label for="subTitle" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Subject Name</label>
@@ -555,7 +580,7 @@
       <form id="addQualForm" class="form mt-16">
         <div class="form-group" style="margin-bottom: 12px;">
           <label for="qualIcon" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Icon (Emoji)</label>
-          <input type="text" id="qualIcon" class="form-control" required value="🎓" style="width: 100%; padding: 8px;">
+          <input type="text" id="qualIcon" class="form-control" required value="graduation-cap" style="width: 100%; padding: 8px;" placeholder="Lucide icon name (e.g. graduation-cap)">
         </div>
         <div class="form-group" style="margin-bottom: 12px;">
           <label for="qualTitle" style="display: block; margin-bottom: 4px; font-size: 0.9rem;">Title</label>
@@ -595,6 +620,7 @@
   </dialog>
 
   <!-- JavaScript -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/animations.js"></script>
   <script src="js/main.js"></script>
 </body>

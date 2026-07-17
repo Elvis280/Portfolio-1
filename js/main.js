@@ -29,24 +29,32 @@ document.addEventListener('DOMContentLoaded', () => {
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
   /* --- FAQ Accordion --- */
-  const faqItems = document.querySelectorAll('.faq-item');
-  faqItems.forEach(item => {
-    const question = item.querySelector('.faq-question');
-    const answer = item.querySelector('.faq-answer');
-    if(question && answer) {
-      question.addEventListener('click', () => {
-        const isActive = item.classList.contains('is-active');
-        faqItems.forEach(otherItem => {
-          otherItem.classList.remove('is-active');
-          otherItem.querySelector('.faq-answer').style.maxHeight = null;
+  window.initFaqAccordion = function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+      if(question && answer) {
+        // Remove existing listener if any to avoid duplicates
+        const newQuestion = question.cloneNode(true);
+        question.parentNode.replaceChild(newQuestion, question);
+        
+        newQuestion.addEventListener('click', () => {
+          const isActive = item.classList.contains('is-active');
+          faqItems.forEach(otherItem => {
+            otherItem.classList.remove('is-active');
+            const otherAnswer = otherItem.querySelector('.faq-answer');
+            if (otherAnswer) otherAnswer.style.maxHeight = null;
+          });
+          if (!isActive) {
+            item.classList.add('is-active');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+          }
         });
-        if (!isActive) {
-          item.classList.add('is-active');
-          answer.style.maxHeight = answer.scrollHeight + 'px';
-        }
-      });
-    }
-  });
+      }
+    });
+  };
+  window.initFaqAccordion();
 
   /* --- Star Rating Logic --- */
   const stars = document.querySelectorAll('#starRating span');
@@ -594,6 +602,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.card--dynamic').forEach(el => el.remove());
 
     sections.forEach(sec => {
+      // Migrate legacy emojis to Lucide icons dynamically
+      if (sec.htmlContent) {
+        sec.htmlContent = sec.htmlContent
+          .replace('🎓', '<i data-lucide="graduation-cap"></i>')
+          .replace('📘', '<i data-lucide="book"></i>')
+          .replace('📚', '<i data-lucide="library"></i>')
+          .replace('🔬', '<i data-lucide="microscope"></i>')
+          .replace('🎖', '<i data-lucide="award"></i>')
+          .replace('📖', '<i data-lucide="book-open"></i>');
+      }
+      
       if (sec.category === 'subject') {
         const subjectsGrid = document.getElementById('subjectsGrid');
         if (!subjectsGrid) return;
@@ -707,7 +726,8 @@ document.addEventListener('DOMContentLoaded', () => {
         div.style.position = 'relative'; 
         div.style.opacity = '1'; 
         div.style.transform = 'translateY(0)';
-        div.innerHTML = sec.htmlContent;
+        let html = sec.htmlContent;
+        div.innerHTML = html;
         
         const delBtn = document.createElement('button');
         delBtn.className = 'admin-delete-btn admin-card-del';
@@ -726,6 +746,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateExperienceVisibility();
     updateQualVisibility();
     updateFaqVisibility();
+    if (window.initFaqAccordion) window.initFaqAccordion();
+    if (window.lucide) window.lucide.createIcons();
   }
 
   window.addDynamicCard = async (category, dataObj = null) => {
@@ -733,14 +755,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let htmlContent = '';
     
     if (category === 'subject') {
-      const icon = dataObj ? dataObj.icon : '📖';
+      const icon = dataObj ? dataObj.icon : 'book-open';
       const title = dataObj ? dataObj.title : 'New Subject';
       const meta = dataObj ? dataObj.meta : 'Classes X - Y';
       const desc = dataObj ? dataObj.desc : 'Description of the subject.';
       const badge = dataObj ? dataObj.badge : 'Experience';
 
       htmlContent = `
-        <div class="card__icon">${icon}</div>
+        <div class="card__icon"><i data-lucide="${icon}"></i></div>
         <h3 class="card__title" data-editable="title_${id}">${title}</h3>
         <p class="card__meta" data-editable="meta_${id}">${meta}</p>
         <p class="card__desc" data-editable="desc_${id}">${desc}</p>
@@ -772,12 +794,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <p class="timeline__desc" data-editable="desc_${id}">${desc}</p>
       `;
     } else if (category === 'qualification') {
-      const icon = dataObj ? dataObj.icon : '🎓';
+      const icon = dataObj ? dataObj.icon : 'graduation-cap';
       const title = dataObj ? dataObj.title : 'Degree';
       const desc = dataObj ? dataObj.desc : 'Description of degree.';
 
       htmlContent = `
-        <div class="card__icon">${icon}</div>
+        <div class="qual-icon"><i data-lucide="${icon}"></i></div>
         <h4 class="card__title" data-editable="title_${id}">${title}</h4>
         <p class="card__desc" data-editable="desc_${id}">${desc}</p>
       `;

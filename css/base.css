@@ -4,14 +4,16 @@
 
 :root {
   /* Color Palette */
-  --clr-primary: #1E3A5F;
-  --clr-accent: #D4AF37;
-  --clr-bg: #FAFAFA;
-  --clr-surface: #FFFFFF;
-  --clr-surface-alt: #F5F5F5;
-  --clr-border: #E5E7EB;
-  --clr-text: #111827;
-  --clr-muted: #6B7280;
+  --clr-bg: #0F172A;            /* Background */
+  --clr-surface-alt: #111827;   /* Secondary Background */
+  --clr-surface: #1E293B;       /* Surface/Card */
+  --clr-primary: #3B82F6;       /* Metallic Blue */
+  --clr-accent: #60A5FA;        /* Accent Blue */
+  --clr-steel: #1F4E79;         /* Steel Blue */
+  --clr-text: #F8FAFC;          /* White (Headings) */
+  --clr-body-text: #E2E8F0;     /* Body Text */
+  --clr-muted: #94A3B8;         /* Muted Text */
+  --clr-border: #334155;        /* Borders */
 
   /* Typography */
   --font-heading: 'Playfair Display', serif;
@@ -34,7 +36,7 @@
 
   /* Animation Easing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-smooth: 0.4s var(--ease-out-expo);
+  --transition-smooth: 300ms var(--ease-out-expo);
 }
 
 /* Reset */
@@ -51,11 +53,15 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: var(--clr-bg);
-  color: var(--clr-text);
+  background: var(--clr-bg);
+  background-attachment: fixed;
+  color: var(--clr-body-text);
   line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--clr-text);
 }
 
 /* --- Premium Luxury Vertical Frame --- */
@@ -65,10 +71,11 @@ body::before {
   top: 0;
   bottom: 0;
   left: 24px;
-  width: 8px;
-  border-left: 1px solid rgba(212, 175, 55, 0.3);
-  border-right: 1px solid rgba(212, 175, 55, 0.9);
-  box-shadow: 10px 0 30px rgba(212, 175, 55, 0.15);
+  width: 6px;
+  background: linear-gradient(to bottom, #163A5F, #1F4E79, #2D5C88, #1F4E79, #163A5F);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 10px 0 30px rgba(31, 78, 121, 0.25);
   pointer-events: none;
   z-index: 9999;
 }
@@ -79,10 +86,11 @@ body::after {
   top: 0;
   bottom: 0;
   right: 24px;
-  width: 8px;
-  border-right: 1px solid rgba(212, 175, 55, 0.3);
-  border-left: 1px solid rgba(212, 175, 55, 0.9);
-  box-shadow: -10px 0 30px rgba(212, 175, 55, 0.15);
+  width: 6px;
+  background: linear-gradient(to bottom, #163A5F, #1F4E79, #2D5C88, #1F4E79, #163A5F);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: -10px 0 30px rgba(31, 78, 121, 0.25);
   pointer-events: none;
   z-index: 9999;
 }

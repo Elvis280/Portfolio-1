@@ -24,7 +24,7 @@
   width: 80%;
   max-width: 800px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(31, 78, 121, 0.25), transparent);
 }
 
 .bg-alt {

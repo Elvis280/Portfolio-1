@@ -40,142 +40,150 @@ function authenticateToken(req, res, next) {
    AUTH ENDPOINTS
    ============================ */
 
-app.post('/api/login', loginLimiter, (req, res) => {
+app.post('/api/login', loginLimiter, async (req, res) => {
   const { password } = req.body;
   if (!password) return res.status(400).json({ error: "Password required" });
 
-  db.get(`SELECT value FROM config WHERE key = 'admin_password'`, (err, row) => {
-    if (err || !row) return res.status(500).json({ error: "Database error" });
+  try {
+    const dbRes = await db.query(`SELECT value FROM "config" WHERE key = 'admin_password'`);
+    if (dbRes.rows.length === 0) return res.status(500).json({ error: "Database error" });
 
-    const isValid = bcrypt.compareSync(password, row.value);
+    const isValid = bcrypt.compareSync(password, dbRes.rows[0].value);
     if (!isValid) return res.status(401).json({ error: "Incorrect password" });
 
     const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
     res.json({ success: true, token });
-  });
+  } catch (err) {
+    res.status(500).json({ error: "Database error" });
+  }
 });
 
-app.post('/api/update-password', authenticateToken, (req, res) => {
+app.post('/api/update-password', authenticateToken, async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   if (!oldPassword || !newPassword) return res.status(400).json({ error: "Missing fields" });
 
-  db.get(`SELECT value FROM config WHERE key = 'admin_password'`, (err, row) => {
-    if (err || !row) return res.status(500).json({ error: "Database error" });
+  try {
+    const dbRes = await db.query(`SELECT value FROM "config" WHERE key = 'admin_password'`);
+    if (dbRes.rows.length === 0) return res.status(500).json({ error: "Database error" });
 
-    if (!bcrypt.compareSync(oldPassword, row.value)) {
+    if (!bcrypt.compareSync(oldPassword, dbRes.rows[0].value)) {
       return res.status(401).json({ error: "Incorrect current password" });
     }
 
     const hash = bcrypt.hashSync(newPassword, 10);
-    db.run(`UPDATE config SET value = ? WHERE key = 'admin_password'`, [hash], function(err) {
-      if (err) return res.status(500).json({ error: "Failed to update password" });
-      res.json({ success: true });
-    });
-  });
+    await db.query(`UPDATE "config" SET value = $1 WHERE key = 'admin_password'`, [hash]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update password" });
+  }
 });
 
 /* ============================
    API ENDPOINTS
    ============================ */
 
-// 1. GET ALL DATA (Hydrate frontend on load)
-app.get('/api/data', (req, res) => {
-  const result = {
-    content: {},
-    gallery: [],
-    testimonials: [],
-    dynamicSections: []
-  };
+app.get('/api/data', async (req, res) => {
+  try {
+    const [textContent, gallery, testimonials, dynamicSections] = await Promise.all([
+      db.query(`SELECT * FROM "textContent"`),
+      db.query(`SELECT * FROM "gallery" ORDER BY order_idx ASC`),
+      db.query(`SELECT * FROM "testimonials" ORDER BY timestamp DESC`),
+      db.query(`SELECT * FROM "dynamicSections" ORDER BY order_idx ASC`)
+    ]);
 
-  db.serialize(() => {
-    db.all(`SELECT * FROM textContent`, [], (err, rows) => {
-      if (!err && rows) {
-        rows.forEach(row => { result.content[row.key] = row.value; });
-      }
-      
-      db.all(`SELECT * FROM gallery ORDER BY order_idx ASC`, [], (err, rows) => {
-        if (!err && rows) result.gallery = rows;
-        
-        db.all(`SELECT * FROM testimonials ORDER BY timestamp DESC`, [], (err, rows) => {
-          if (!err && rows) result.testimonials = rows;
-          
-          db.all(`SELECT * FROM dynamicSections ORDER BY order_idx ASC`, [], (err, rows) => {
-            if (!err && rows) result.dynamicSections = rows;
-            
-            res.json(result);
-          });
-        });
-      });
+    const contentObj = {};
+    textContent.rows.forEach(row => { contentObj[row.key] = row.value; });
+
+    res.json({
+      content: contentObj,
+      gallery: gallery.rows,
+      testimonials: testimonials.rows,
+      dynamicSections: dynamicSections.rows
     });
-  });
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    res.status(500).json({ error: "Failed to fetch data" });
+  }
 });
 
 // 2. BULK UPDATE TEXT CONTENT
-app.post('/api/content', authenticateToken, (req, res) => {
+app.post('/api/content', authenticateToken, async (req, res) => {
   const data = req.body; // Expects object: { key1: val1, key2: val2 }
   
-  db.serialize(() => {
-    db.run('BEGIN TRANSACTION');
-    const stmt = db.prepare(`INSERT INTO textContent (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value`);
-    
+  const client = await db.connect();
+  try {
+    await client.query('BEGIN');
     for (const [key, value] of Object.entries(data)) {
-      stmt.run(key, value);
+      await client.query(
+        `INSERT INTO "textContent" (key, value) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
+        [key, value]
+      );
     }
-    
-    stmt.finalize();
-    db.run('COMMIT', (err) => {
-      if (err) res.status(500).json({ error: err.message });
-      else res.json({ success: true });
-    });
-  });
+    await client.query('COMMIT');
+    res.json({ success: true });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error("Content update error:", err);
+    res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
+  }
 });
 
 // 3. GALLERY UPSERT (Add or Update photo)
-app.post('/api/gallery', authenticateToken, (req, res) => {
+// 3. GALLERY UPSERT (Add or Update photo)
+app.post('/api/gallery', authenticateToken, async (req, res) => {
   const { id, src, order_idx } = req.body;
-  const stmt = db.prepare(`INSERT INTO gallery (id, src, order_idx) VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET src=excluded.src, order_idx=excluded.order_idx`);
-  stmt.run(id, src, order_idx || 0, function(err) {
-    if (err) res.status(500).json({ error: err.message });
-    else res.json({ success: true });
-  });
+  try {
+    await db.query(`INSERT INTO "gallery" (id, src, order_idx) VALUES ($1, $2, $3) ON CONFLICT (id) DO UPDATE SET src = EXCLUDED.src, order_idx = EXCLUDED.order_idx`, [id, src, order_idx || 0]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // 4. GALLERY DELETE
-app.delete('/api/gallery/:id', authenticateToken, (req, res) => {
+app.delete('/api/gallery/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  db.run(`DELETE FROM gallery WHERE id = ?`, id, function(err) {
-    if (err) res.status(500).json({ error: err.message });
-    else res.json({ success: true });
-  });
+  try {
+    await db.query(`DELETE FROM "gallery" WHERE id = $1`, [id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // 5. TESTIMONIALS UPSERT
-app.post('/api/testimonials', (req, res) => {
+app.post('/api/testimonials', async (req, res) => {
   const { id, name, student, grade, subject, rating, feedback, timestamp } = req.body;
-  const stmt = db.prepare(`INSERT INTO testimonials (id, name, student, grade, subject, rating, feedback, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET feedback=excluded.feedback`);
-  stmt.run(id, name, student, grade, subject, rating, feedback, timestamp, function(err) {
-    if (err) res.status(500).json({ error: err.message });
-    else res.json({ success: true });
-  });
+  try {
+    await db.query(`INSERT INTO "testimonials" (id, name, student, grade, subject, rating, feedback, timestamp) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (id) DO UPDATE SET feedback = EXCLUDED.feedback`, [id, name, student, grade, subject, rating, feedback, timestamp]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // 6. DYNAMIC SECTION UPSERT
-app.post('/api/dynamic', authenticateToken, (req, res) => {
+app.post('/api/dynamic', authenticateToken, async (req, res) => {
   const { id, category, htmlContent, order_idx } = req.body;
-  const stmt = db.prepare(`INSERT INTO dynamicSections (id, category, htmlContent, order_idx) VALUES (?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET htmlContent=excluded.htmlContent, order_idx=excluded.order_idx`);
-  stmt.run(id, category, htmlContent, order_idx || 0, function(err) {
-    if (err) res.status(500).json({ error: err.message });
-    else res.json({ success: true });
-  });
+  try {
+    await db.query(`INSERT INTO "dynamicSections" (id, category, "htmlContent", order_idx) VALUES ($1, $2, $3, $4) ON CONFLICT (id) DO UPDATE SET "htmlContent" = EXCLUDED."htmlContent", order_idx = EXCLUDED.order_idx`, [id, category, htmlContent, order_idx || 0]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // 7. DYNAMIC SECTION DELETE
-app.delete('/api/dynamic/:id', authenticateToken, (req, res) => {
+app.delete('/api/dynamic/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  db.run(`DELETE FROM dynamicSections WHERE id = ?`, id, function(err) {
-    if (err) res.status(500).json({ error: err.message });
-    else res.json({ success: true });
-  });
+  try {
+    await db.query(`DELETE FROM "dynamicSections" WHERE id = $1`, [id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(PORT, () => {
