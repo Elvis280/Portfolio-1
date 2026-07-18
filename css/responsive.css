@@ -107,5 +107,35 @@
     width: 100%;
     justify-content: center;
   }
+
+  /* --- Subjects Mobile Grid --- */
+  #subjectsGrid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    overflow: visible !important;
+  }
+  
+  #subjectsGrid .card {
+    flex: none !important;
+    width: 100% !important;
+  }
+  
+  #subjectsGrid .card.hidden-on-mobile {
+    display: none !important;
+  }
+  
+  #subjectCarouselControls {
+    display: none !important;
+  }
+  
+  /* --- Freeform Builder Fallbacks --- */
+  .is-draggable {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 24px !important;
+  }
 }
 
