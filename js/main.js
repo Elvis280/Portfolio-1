@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!testimonialsGrid || !testimonialViewMoreBtn || !testimonialViewLessBtn) return;
     
     const cards = Array.from(testimonialsGrid.querySelectorAll('.card'));
-    let maxVisible = window.innerWidth <= 768 ? 2 : 3;
+    let maxVisible = window.innerWidth <= 768 ? 2 : window.innerWidth <= 1024 ? 4 : 3;
     
     if (cards.length > maxVisible) {
       cards.forEach((card, index) => {

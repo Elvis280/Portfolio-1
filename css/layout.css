@@ -63,7 +63,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .grid-3 {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Tablet fallback: 2 cols */
   }
 }
 
@@ -75,8 +75,11 @@
 }
 
 @media (min-width: 1024px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
   .hero__container {
-    grid-template-columns: 1.1fr 0.9fr; /* Gives text slightly more room */
+    grid-template-columns: 1.1fr 0.9fr; 
     gap: 96px;
   }
 }
