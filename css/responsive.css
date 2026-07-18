@@ -8,11 +8,6 @@
     padding: var(--space-64) 0;
   }
   
-  /* Hide the luxury side frames on mobile so content has room */
-  body::before, body::after {
-    display: none;
-  }
-
   /* --- Hero Mobile --- */
   .hero {
     padding-top: 120px;

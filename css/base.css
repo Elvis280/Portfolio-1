@@ -64,37 +64,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--clr-text);
 }
 
-/* --- Premium Luxury Vertical Frame --- */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 24px;
-  width: 6px;
-  background: linear-gradient(to bottom, #163A5F, #1F4E79, #2D5C88, #1F4E79, #163A5F);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 10px 0 30px rgba(31, 78, 121, 0.25);
-  pointer-events: none;
-  z-index: 9999;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 24px;
-  width: 6px;
-  background: linear-gradient(to bottom, #163A5F, #1F4E79, #2D5C88, #1F4E79, #163A5F);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: -10px 0 30px rgba(31, 78, 121, 0.25);
-  pointer-events: none;
-  z-index: 9999;
-}
-
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   color: var(--clr-primary);
