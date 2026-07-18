@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <style id="theme-css"></style>
+  <style id="admin-custom-css"></style>
 </head>
 <body>
   
@@ -32,11 +34,16 @@
         <li><a href="#experience" class="navbar__link">Experience</a></li>
         <li><a href="#contact" class="navbar__link">Contact</a></li>
       </ul>
-      <button class="navbar__toggle" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <div style="display: flex; align-items: center; gap: 16px; margin-left: auto;">
+        <button id="themeToggleBtn" style="background: transparent; border: 1px solid var(--clr-border); border-radius: 50%; width: 40px; height: 40px; cursor: pointer; color: var(--clr-text); display: flex; align-items: center; justify-content: center; transition: background 0.2s;" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <button class="navbar__toggle" aria-label="Toggle menu" style="margin-left: 0;">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </nav>
   </header>
 
@@ -51,12 +58,9 @@
           <p class="hero__bio animate-up" data-editable="heroBio">
             A dedicated and passionate in-home educator with 7 years of teaching experience. Specialising in Mathematics for Classes 6–10 and Psychology for Classes 11–12. Committed to building strong conceptual foundations and nurturing the mental well-being of every student through personalised attention.
           </p>
-          <div class="hero__badges animate-up">
-            <span class="badge" data-editable="heroBadge1">B.Ed</span>
-            <span class="badge" data-editable="heroBadge2">M.A — Education</span>
-            <span class="badge" data-editable="heroBadge3">B.A — Education and Sociology</span>
-            <span class="badge" data-editable="heroBadge4">CTET Qualified</span>
-            <span class="badge" data-editable="heroBadge5">7 Years Experience</span>
+          <div class="hero__badges" id="heroBadgesGrid">
+            <!-- Dynamic tags from DB will be injected here -->
+            <button id="adminHeroTagAdd" class="badge badge--primary admin-only" style="display: none; cursor: pointer; border: 1px dashed currentColor; background: transparent; padding: 4px 12px; font-size: 0.8rem;" onclick="addDynamicCard('hero_tag')">+ Add Tag</button>
           </div>
           <div class="hero__actions animate-up">
             <a href="#contact" class="btn btn--primary" data-editable="heroBtn1Text" data-editable-link="heroBtn1Link" style="position: relative;">Get in Touch</a>
@@ -81,8 +85,8 @@
     <section class="section bg-alt" id="subjects">
       <div class="container">
         <div class="section__header animate-up">
-          <h3 class="section__subtitle">What I Teach</h3>
-          <h2 class="section__title">Subjects & Classes</h2>
+          <h3 class="section__subtitle" data-editable="sectSub_1">What I Teach</h3>
+          <h2 class="section__title" data-editable="sectTitle_1">Subjects & Classes</h2>
         </div>
         <div class="carousel-wrapper animate-up" id="subjectCarouselWrapper">
           <div class="carousel-track" id="subjectsGrid">
@@ -109,6 +113,10 @@
             <button class="carousel-btn" id="subjectNext" aria-label="Next Subjects">→</button>
           </div>
         </div>
+        
+        <!-- Mobile Subject View More -->
+        <div class="subject-actions mt-24 animate-up" style="text-align: center;">
+          <button id="subjectViewMoreBtn" class="btn btn--secondary" style="display: none;">View More</button>
         </div>
         
         <!-- Admin Subject Add (Hidden by default) -->
@@ -122,8 +130,8 @@
     <section class="section" id="experience">
       <div class="container">
         <div class="section__header animate-up">
-          <h3 class="section__subtitle">Career Journey</h3>
-          <h2 class="section__title">Teaching Experience</h2>
+          <h3 class="section__subtitle" data-editable="sectSub_2">Career Journey</h3>
+          <h2 class="section__title" data-editable="sectTitle_2">Teaching Experience</h2>
         </div>
         <div class="timeline animate-up" id="experienceTimeline">
           <!-- Dynamically populated from backend -->
@@ -145,8 +153,8 @@
     <section class="section" id="skills">
       <div class="container">
         <div class="section__header animate-up">
-          <h3 class="section__subtitle">Competencies</h3>
-          <h2 class="section__title">Teaching Skills</h2>
+          <h3 class="section__subtitle" data-editable="sectSub_3">Competencies</h3>
+          <h2 class="section__title" data-editable="sectTitle_3">Teaching Skills</h2>
         </div>
         <div class="grid-2 gap-32">
           <div class="skill animate-up">
@@ -216,8 +224,8 @@
     <section class="section bg-alt" id="qualifications">
       <div class="container">
         <div class="section__header animate-up">
-          <h3 class="section__subtitle">Academic Background</h3>
-          <h2 class="section__title">Qualifications & Certifications</h2>
+          <h3 class="section__subtitle" data-editable="sectSub_4">Academic Background</h3>
+          <h2 class="section__title" data-editable="sectTitle_4">Qualifications & Certifications</h2>
         </div>
         
         <div class="grid-3 gap-24 mb-48" id="qualificationsGrid1">
@@ -248,17 +256,17 @@
     <section class="section" id="testimonials">
       <div class="container">
         <div class="section__header animate-up">
-          <h3 class="section__subtitle">What Parents Say</h3>
-          <h2 class="section__title">Testimonials</h2>
+          <h3 class="section__subtitle" data-editable="sectSub_5">What Parents Say</h3>
+          <h2 class="section__title" data-editable="sectTitle_5">Testimonials</h2>
         </div>
-        <div class="carousel-wrapper animate-up">
-          <div class="carousel-track" id="testimonialsGrid">
-            <!-- Dynamic testimonials from the database will be injected here via main.js -->
-          </div>
-          <div class="carousel-controls">
-            <button class="carousel-btn" id="carouselPrev" aria-label="Previous Testimonials">←</button>
-            <button class="carousel-btn" id="carouselNext" aria-label="Next Testimonials">→</button>
-          </div>
+        <div class="grid-3 gap-24" id="testimonialsGrid">
+          <!-- Dynamic testimonials from the database will be injected here via main.js -->
+        </div>
+        
+        <!-- Testimonials View More / Less -->
+        <div class="testimonial-actions mt-24 animate-up" style="text-align: center; display: flex; justify-content: center; gap: 16px;">
+          <button id="testimonialViewMoreBtn" class="btn btn--secondary" style="display: none;">View More</button>
+          <button id="testimonialViewLessBtn" class="btn btn--secondary" style="display: none;">View Less</button>
         </div>
       </div>
     </section>
@@ -267,16 +275,16 @@
     <section class="section bg-alt" id="gallery">
       <div class="container">
         <div class="section__header animate-up">
-          <h3 class="section__subtitle">Visual Evidence</h3>
-          <h2 class="section__title">Parent Visual Feedback</h2>
+          <h3 class="section__subtitle" data-editable="sectSub_6">Visual Evidence</h3>
+          <h2 class="section__title" data-editable="sectTitle_6">Parent Visual Feedback</h2>
         </div>
         <div class="gallery-grid animate-up" id="galleryGridTarget">
           <!-- The python script extracted image_1.jpeg etc. We will link a few here -->
-          <div class="gallery-item"><img src="assets/images/image_1.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
-          <div class="gallery-item"><img src="assets/images/image_2.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
-          <div class="gallery-item"><img src="assets/images/image_3.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
-          <div class="gallery-item"><img src="assets/images/image_4.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
-          <div class="gallery-item"><img src="assets/images/image_5.jpeg" alt="Feedback Screenshot" class="gallery-img"></div>
+          <div class="gallery-item"><img src="assets/images/image_1.jpeg" alt="Feedback Screenshot" class="gallery-img"><p class="gallery-caption" data-editable="galleryCap1">Conversation with parents of Aarav</p></div>
+          <div class="gallery-item"><img src="assets/images/image_2.jpeg" alt="Feedback Screenshot" class="gallery-img"><p class="gallery-caption" data-editable="galleryCap2">Conversation with parents of Rohan</p></div>
+          <div class="gallery-item"><img src="assets/images/image_3.jpeg" alt="Feedback Screenshot" class="gallery-img"><p class="gallery-caption" data-editable="galleryCap3">Conversation with parents of Sneha</p></div>
+          <div class="gallery-item"><img src="assets/images/image_4.jpeg" alt="Feedback Screenshot" class="gallery-img"><p class="gallery-caption" data-editable="galleryCap4">Conversation with parents of Vikram</p></div>
+          <div class="gallery-item"><img src="assets/images/image_5.jpeg" alt="Feedback Screenshot" class="gallery-img"><p class="gallery-caption" data-editable="galleryCap5">Conversation with parents of Ananya</p></div>
           
           <!-- Admin Gallery Add (Hidden by default) -->
           <div class="gallery-item gallery-item--add" id="adminGalleryAdd" style="display: none;">
@@ -298,8 +306,8 @@
     <section class="section" id="faq">
       <div class="container">
         <div class="section__header animate-up">
-          <h3 class="section__subtitle">Common Questions</h3>
-          <h2 class="section__title">Frequently Asked Questions</h2>
+          <h3 class="section__subtitle" data-editable="sectSub_7">Common Questions</h3>
+          <h2 class="section__title" data-editable="sectTitle_7">Frequently Asked Questions</h2>
         </div>
         <div class="faq-accordion animate-up" id="faqAccordion">
           <!-- Dynamically populated from backend -->
@@ -329,6 +337,7 @@
             <p style="margin-bottom: 8px;"><strong data-editable="contactAvailLabel">Availability:</strong> <span data-editable="contactAvail">Mon - Sat • 8:00 AM - 7:00 PM</span></p>
             <p style="margin-bottom: 8px;"><strong data-editable="contactFormatLabel">Format:</strong> <span data-editable="contactFormat">In-Home Tuition & Small Groups</span></p>
             <div class="mt-24" style="display: flex; gap: 16px; flex-wrap: wrap;">
+              <a href="https://wa.me/919621390785?text=Hello%21%20I%20would%20like%20to%20book%20a%20demo%20class." target="_blank" class="btn btn--primary" data-editable="contactDemoText" data-editable-link="contactDemoLink" style="position: relative;">Book Demo</a>
               <a href="mailto:shivam12dubey10@gmail.com" class="btn btn--secondary" data-editable="contactEmailText" data-editable-link="contactEmailLink" style="position: relative;">Email Me</a>
               <a href="tel:+919621390785" class="btn btn--secondary" data-editable="contactCallText" data-editable-link="contactCallLink" style="position: relative;">Call Me</a>
               <a href="https://wa.me/919621390785" target="_blank" class="btn btn--primary" data-editable="contactWhatsappText" data-editable-link="contactWhatsappLink" style="position: relative; background-color: #25D366; border-color: #25D366; color: white;">WhatsApp Me</a>
@@ -388,6 +397,63 @@
         </div>
       </div>
     </section>
+    <!-- Custom Sections Container -->
+    <div id="customSectionsContainer"></div>
+
+    <!-- Admin Add Section UI (Hidden by default) -->
+    <div class="admin-add-container mt-24 animate-up" id="adminAddSection" style="display: none; text-align: center; margin-bottom: 40px;">
+      <button class="btn btn--secondary" id="openAddSectionBtn">+ Add Custom Section</button>
+    </div>
+
+    <!-- Add Section Template Modal -->
+    <dialog id="addSectionModal" class="admin-modal" style="border:1px solid var(--clr-border); border-radius:8px; padding:24px; background:var(--clr-bg); color:var(--clr-text); width: 90%; max-width: 600px; margin: auto;">
+      <h3 style="margin-bottom:16px;">Choose a Section Template</h3>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:16px;">
+        <!-- Template 1: Split Text/Image -->
+        <button class="template-btn" data-template="split" style="background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:8px; padding:16px; cursor:pointer; text-align:left; color:var(--clr-text);">
+          <div style="height:80px; background:var(--clr-bg); margin-bottom:12px; display:flex;">
+            <div style="flex:1; padding:8px;"><div style="height:4px; width:40%; background:var(--clr-primary); margin-bottom:8px;"></div><div style="height:2px; width:80%; background:var(--clr-muted); margin-bottom:4px;"></div><div style="height:2px; width:60%; background:var(--clr-muted);"></div></div>
+            <div style="flex:1; background:var(--clr-accent); opacity:0.5;"></div>
+          </div>
+          <h4>Split Layout (Text & Image)</h4>
+          <p style="font-size:0.8rem; color:var(--clr-muted); margin-top:4px;">A classic 50/50 split for featured content.</p>
+        </button>
+
+        <!-- Template 2: Grid Layout -->
+        <button class="template-btn" data-template="grid" style="background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:8px; padding:16px; cursor:pointer; text-align:left; color:var(--clr-text);">
+          <div style="height:80px; background:var(--clr-bg); margin-bottom:12px; display:flex; gap:4px; padding:8px;">
+            <div style="flex:1; background:var(--clr-accent); opacity:0.5; border-radius:4px;"></div>
+            <div style="flex:1; background:var(--clr-accent); opacity:0.5; border-radius:4px;"></div>
+            <div style="flex:1; background:var(--clr-accent); opacity:0.5; border-radius:4px;"></div>
+          </div>
+          <h4>3-Column Grid</h4>
+          <p style="font-size:0.8rem; color:var(--clr-muted); margin-top:4px;">Perfect for highlighting services or features.</p>
+        </button>
+
+        <!-- Template 3: Centered CTA -->
+        <button class="template-btn" data-template="cta" style="background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:8px; padding:16px; cursor:pointer; text-align:left; color:var(--clr-text);">
+          <div style="height:80px; background:var(--clr-bg); margin-bottom:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;">
+            <div style="height:6px; width:60%; background:var(--clr-primary);"></div>
+            <div style="height:16px; width:40px; background:var(--clr-accent); border-radius:8px;"></div>
+          </div>
+          <h4>Call to Action</h4>
+          <p style="font-size:0.8rem; color:var(--clr-muted); margin-top:4px;">Centered content to drive user engagement.</p>
+        </button>
+
+        <!-- Template 4: Blank Canvas -->
+        <button class="template-btn" data-template="blank" style="background:var(--clr-surface); border:1px dashed var(--clr-border); border-radius:8px; padding:16px; cursor:pointer; text-align:left; color:var(--clr-text);">
+          <div style="height:80px; background:var(--clr-bg); margin-bottom:12px; display:flex; align-items:center; justify-content:center;">
+            <i data-lucide="plus" style="color:var(--clr-muted);"></i>
+          </div>
+          <h4>Blank Canvas</h4>
+          <p style="font-size:0.8rem; color:var(--clr-muted); margin-top:4px;">Start from scratch and add elements manually.</p>
+        </button>
+      </div>
+      <div style="margin-top:24px; text-align:right;">
+        <button class="btn btn--outline" id="closeSectionModalBtn">Cancel</button>
+      </div>
+    </dialog>
+
   </main>
 
   <footer class="footer">
@@ -422,7 +488,7 @@
             </div>
             <h4 class="footer__heading" data-editable="footerScanTitle" style="margin-top: 24px;">Scan & Share</h4>
             <div style="background: #FFFFFF; padding: 8px; border-radius: 8px; display: inline-block; width: fit-content;">
-              <img src="assets/images/qr_code.png" alt="QR Code for Portfolio" style="width: 80px; height: 80px; display: block;">
+              <img src="assets/images/qr_code.png" alt="QR Code for Portfolio" class="qr-code-img" style="width: 120px; height: 120px; display: block;">
             </div>
           </div>
         </div>
@@ -433,6 +499,84 @@
       </div>
     </footer>
 
+    <!-- Floating Text Format Toolbar -->
+  <div id="textFormatToolbar" style="display:none; position:absolute; z-index:10000; background:var(--clr-surface); border:1px solid var(--clr-border); padding:6px; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,0.3); gap: 6px; align-items: center;">
+
+    <button class="btn btn--small" style="padding: 2px 6px;" onmousedown="event.preventDefault(); document.execCommand('bold', false, null)"><b>B</b></button>
+    <button class="btn btn--small" style="padding: 2px 6px;" onmousedown="event.preventDefault(); document.execCommand('italic', false, null)"><i>I</i></button>
+    <button class="btn btn--small" style="padding: 2px 6px;" onmousedown="event.preventDefault(); document.execCommand('underline', false, null)"><u>U</u></button>
+    <input type="color" id="textColorPicker" class="style-color-picker" style="width:24px; height:24px; vertical-align:middle; cursor:pointer;" title="Text Color" onmousedown="event.preventDefault();">
+  </div>
+
+  <!-- Universal Style Inspector UI -->
+  <div id="adminHighlightBox" style="display:none; position:absolute; border:2px dashed var(--clr-accent); background:rgba(96, 165, 250, 0.1); pointer-events:none; z-index:9998; transition:all 0.1s ease-out;"></div>
+  
+  <div id="universalStyleInspector" style="display:none; position:absolute; z-index:10000; background:var(--clr-surface); border:1px solid var(--clr-border); padding:12px; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.5); width: 230px; flex-direction:column; gap:10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--clr-border); padding-bottom:8px;">
+      <span style="font-size:0.75rem; font-family:monospace; color:var(--clr-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px;" id="usiTargetName">element</span>
+      <button id="usiCloseBtn" style="background:transparent; border:none; color:var(--clr-text); cursor:pointer; font-size:1.1rem; line-height:1;">&times;</button>
+    </div>
+    
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+        <span>Background</span>
+        <input type="color" id="usiBgColor" class="style-color-picker" style="width:100%;">
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+        <span>Text Color</span>
+        <input type="color" id="usiTextColor" class="style-color-picker" style="width:100%;">
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+        <span>Border</span>
+        <input type="color" id="usiBorderColor" class="style-color-picker" style="width:100%;">
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+        <span>Font Weight</span>
+        <select id="usiFontWeight" style="background:var(--clr-bg); color:var(--clr-text); border:1px solid var(--clr-border); padding:2px; height:26px; border-radius:4px; font-size:0.7rem;">
+          <option value="">-</option>
+          <option value="300">Light</option>
+          <option value="400">Normal</option>
+          <option value="600">Semibold</option>
+          <option value="700">Bold</option>
+          <option value="900">Black</option>
+        </select>
+      </div>
+    </div>
+    
+    <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+      <span>Font Size <span style="color:var(--clr-muted); font-size:0.6rem;">(e.g. 1.2rem or 16px)</span></span>
+      <input type="text" id="usiFontSize" style="background:var(--clr-bg); color:var(--clr-text); border:1px solid var(--clr-border); padding:4px; border-radius:4px;">
+    </div>
+    <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+      <span>Line Height <span style="color:var(--clr-muted); font-size:0.6rem;">(e.g. 1.5 or 24px)</span></span>
+      <input type="text" id="usiLineHeight" style="background:var(--clr-bg); color:var(--clr-text); border:1px solid var(--clr-border); padding:4px; border-radius:4px;">
+    </div>
+    <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+      <span>Padding (Button Size) <span style="color:var(--clr-muted); font-size:0.6rem;">(e.g. 10px 20px)</span></span>
+      <input type="text" id="usiPadding" style="background:var(--clr-bg); color:var(--clr-text); border:1px solid var(--clr-border); padding:4px; border-radius:4px;">
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+        <span>Width <span style="color:var(--clr-muted); font-size:0.6rem;">(e.g. 100%, 300px)</span></span>
+        <input type="text" id="usiWidth" style="background:var(--clr-bg); color:var(--clr-text); border:1px solid var(--clr-border); padding:4px; border-radius:4px;">
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+        <span>Height <span style="color:var(--clr-muted); font-size:0.6rem;">(e.g. auto, 300px)</span></span>
+        <input type="text" id="usiHeight" style="background:var(--clr-bg); color:var(--clr-text); border:1px solid var(--clr-border); padding:4px; border-radius:4px;">
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+        <span>Left (X) <span style="color:var(--clr-muted); font-size:0.6rem;">(e.g. 50px)</span></span>
+        <input type="text" id="usiLeft" style="background:var(--clr-bg); color:var(--clr-text); border:1px solid var(--clr-border); padding:4px; border-radius:4px;">
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:0.75rem; color:var(--clr-text);">
+        <span>Top (Y) <span style="color:var(--clr-muted); font-size:0.6rem;">(e.g. 100px)</span></span>
+        <input type="text" id="usiTop" style="background:var(--clr-bg); color:var(--clr-text); border:1px solid var(--clr-border); padding:4px; border-radius:4px;">
+      </div>
+    </div>
+  </div>
+
   <!-- Admin Mode Trigger -->
   <button id="adminTrigger" class="admin-trigger" aria-label="Enable Admin Mode" title="Admin Login"></button>
   
@@ -440,8 +584,48 @@
   <div id="adminPanel" class="admin-panel">
     <p class="admin-panel__title">Admin Mode Active</p>
     <button id="adminToggleEdit" class="btn btn--secondary btn--small">Enable Text Editor</button>
-    <button id="adminSaveContent" class="btn btn--primary btn--small" style="display:none;">Save Changes</button>
-    <button id="adminUpdatePwdBtn" class="btn btn--secondary btn--small">Update Password</button>
+    <button id="adminToggleStyle" class="btn btn--secondary btn--small">Enable Style Editor</button>
+    <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+      <span style="font-size:0.8rem; color:var(--clr-muted);">Desktop</span>
+      <label style="position:relative; display:inline-block; width:40px; height:20px;">
+        <input type="checkbox" id="adminToggleMobile" style="opacity:0; width:0; height:0;">
+        <span style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:var(--clr-surface); border:1px solid var(--clr-border); border-radius:20px; transition:.4s;"></span>
+        <span class="slider-round" style="position:absolute; height:16px; width:16px; left:2px; bottom:1px; background-color:var(--clr-accent); border-radius:50%; transition:.4s; pointer-events:none;"></span>
+      </label>
+      <span style="font-size:0.8rem; color:var(--clr-muted);">Mobile</span>
+    </div>
+    <style>
+      #adminToggleMobile:checked + span + .slider-round { transform: translateX(18px); }
+    </style>
+    
+    <!-- Style Editor Panel (Hidden by default) -->
+    <div id="adminStyleEditor" class="admin-style-editor" style="display: none; flex-direction: column; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--clr-border);">
+      <p style="font-size: 0.8rem; color: var(--clr-muted); margin-bottom: 4px;">Global Colors</p>
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
+        <span>Background</span>
+        <input type="color" id="styleBgColor" class="style-color-picker">
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
+        <span>Surface</span>
+        <input type="color" id="styleSurfaceColor" class="style-color-picker">
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
+        <span>Primary</span>
+        <input type="color" id="stylePrimaryColor" class="style-color-picker">
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
+        <span>Accent</span>
+        <input type="color" id="styleAccentColor" class="style-color-picker">
+      </div>
+      
+      <p style="font-size: 0.75rem; color: var(--clr-muted); margin-top: 8px; line-height: 1.3;">Hover over sections and click to set specific background colors.</p>
+    </div>
+
+    <button id="adminSaveContent" class="btn btn--primary btn--small" style="display:none; margin-top: 10px;">Save Text</button>
+    <button id="adminSaveStyles" class="btn btn--primary btn--small" style="display:none; margin-top: 10px;">Save Styles</button>
+    
+    <button id="adminUpdatePwdBtn" class="btn btn--secondary btn--small" style="margin-top: 10px;">Update Password</button>
     <button id="adminExit" class="btn btn--secondary btn--small">Exit</button>
   </div>
 
@@ -611,6 +795,13 @@
       </form>
     </div>
   </dialog>
+
+  <!-- Image Lightbox Modal -->
+  <div id="imageLightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; flex-direction: column; cursor: pointer;">
+    <span style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer;" id="closeLightbox">&times;</span>
+    <img id="lightboxImg" style="max-width: 90%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+    <p id="lightboxCaption" style="color: white; margin-top: 16px; font-size: 1.1rem; text-align: center; max-width: 80%;"></p>
+  </div>
 
   <!-- JavaScript -->
   <script src="https://unpkg.com/lucide@latest"></script>
