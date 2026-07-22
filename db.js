@@ -13,6 +13,10 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+pool.on('error', (err, client) => {
+  console.error('Unexpected error on idle client', err);
+});
+
 // Test connection and initialize default admin if not exists
 pool.connect(async (err, client, release) => {
   if (err) {

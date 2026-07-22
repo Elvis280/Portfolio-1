@@ -1001,7 +1001,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (isEditingMode) {
       adminToggleVisual.textContent = 'Cancel Editing';
-      adminSaveChanges.style.display = 'inline-block';
       
       // Text logic
       if (adminAddSection) adminAddSection.style.display = 'block';
@@ -1019,7 +1018,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
     } else {
       adminToggleVisual.textContent = 'Enable Visual Editor';
-      adminSaveChanges.style.display = 'none';
       
       // Text logic
       if (adminAddSection) adminAddSection.style.display = 'none';
@@ -1085,7 +1083,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  async function saveChanges() {
+  async function saveChanges(e) {
+    const btn = e ? e.currentTarget : null;
+    const originalText = btn ? btn.textContent : '';
+    if (btn) {
+      btn.textContent = 'Saving...';
+      btn.disabled = true;
+    }
+
     const editables = document.querySelectorAll('[data-editable]');
     const contentData = {};
     
@@ -1116,11 +1121,21 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       alert('Failed to save to database.');
       toggleLinkEditors(true); // Put them back if save failed
+    } finally {
+      if (btn) {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
     }
   }
 
   if (adminSaveChanges) {
     adminSaveChanges.addEventListener('click', saveChanges);
+  }
+
+  const usiSaveBtn = document.getElementById('usiSaveBtn');
+  if (usiSaveBtn) {
+    usiSaveBtn.addEventListener('click', saveChanges);
   }
 
   /* --- Admin Style Editor Logic --- */
@@ -1133,6 +1148,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const styleSurfaceColor = document.getElementById('styleSurfaceColor');
   const stylePrimaryColor = document.getElementById('stylePrimaryColor');
   const styleAccentColor = document.getElementById('styleAccentColor');
+  const styleTransparentBorderLight = document.getElementById('styleTransparentBorderLight');
+  const styleTransparentBorderDark = document.getElementById('styleTransparentBorderDark');
   
   if (adminToggleMobile) {
     adminToggleMobile.addEventListener('change', (e) => {
@@ -1180,6 +1197,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('styleSurfaceColor').value = getHex(rootStyles.getPropertyValue('--clr-surface'));
     document.getElementById('stylePrimaryColor').value = getHex(rootStyles.getPropertyValue('--clr-primary'));
     document.getElementById('styleAccentColor').value = getHex(rootStyles.getPropertyValue('--clr-accent'));
+
+    if (styleTransparentBorderLight) {
+      styleTransparentBorderLight.checked = customCssStyle.innerHTML.includes('html:not([data-theme="dark"]) .hero__portrait { border-color: transparent !important; }');
+    }
+    if (styleTransparentBorderDark) {
+      styleTransparentBorderDark.checked = customCssStyle.innerHTML.includes('[data-theme="dark"] .hero__portrait { border-color: transparent !important; }');
+    }
   }
 
   // Handle global color changes
@@ -1209,6 +1233,23 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+  
+  const applyBorderRule = (checkbox, rule) => {
+    if (!checkbox) return;
+    checkbox.addEventListener('change', (e) => {
+      let currentCss = customCssStyle.innerHTML;
+      if (e.target.checked) {
+        if (!currentCss.includes(rule)) {
+          customCssStyle.innerHTML = currentCss + '\n' + rule;
+        }
+      } else {
+        customCssStyle.innerHTML = currentCss.replace(rule, '').trim();
+      }
+    });
+  };
+
+  applyBorderRule(styleTransparentBorderLight, 'html:not([data-theme="dark"]) .hero__portrait { border-color: transparent !important; }');
+  applyBorderRule(styleTransparentBorderDark, '[data-theme="dark"] .hero__portrait { border-color: transparent !important; }');
 
   // Universal Element Inspector Logic
   const adminHighlightBox = document.getElementById('adminHighlightBox');

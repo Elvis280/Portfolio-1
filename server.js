@@ -112,17 +112,19 @@ app.post('/api/content', authenticateToken, async (req, res) => {
   
   const client = await db.connect();
   try {
-    await client.query('BEGIN');
-    for (const [key, value] of Object.entries(data)) {
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+    
+    if (keys.length > 0) {
       await client.query(
-        `INSERT INTO "textContent" (key, value) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
-        [key, value]
+        `INSERT INTO "textContent" (key, value)
+         SELECT * FROM unnest($1::text[], $2::text[])
+         ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
+        [keys, values]
       );
     }
-    await client.query('COMMIT');
     res.json({ success: true });
   } catch (err) {
-    await client.query('ROLLBACK');
     console.error("Content update error:", err);
     res.status(500).json({ error: err.message });
   } finally {
