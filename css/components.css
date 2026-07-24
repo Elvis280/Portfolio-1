@@ -1028,6 +1028,8 @@ body.admin-mode-active .badge--primary:hover {
   scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox */
   padding-bottom: var(--space-16);
+  padding-top: var(--space-16);
+  margin-top: calc(-1 * var(--space-16)); /* Offset the padding to preserve visual layout */
 }
 
 .carousel-track::-webkit-scrollbar {
