@@ -42,6 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
         themeCssTag.innerHTML = window.dbThemeDark || ''; // Empty defaults to base.css vars
       }
     }
+    
+    // Refresh admin style pickers if they exist and editing mode might be active
+    if (typeof initStylePickers === 'function') {
+      // Small timeout to allow CSS to apply before reading computed styles
+      setTimeout(initStylePickers, 50);
+    }
   };
 
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -393,6 +399,23 @@ document.addEventListener('DOMContentLoaded', () => {
       // Hydrate Dynamic Sections
       if (data.dynamicSections) {
         renderDynamicSections(data.dynamicSections);
+      }
+      
+      // Hydrate Text Content (Run again after dynamic sections are rendered to ensure they get updated)
+      if (data.content) {
+        for (const [key, val] of Object.entries(data.content)) {
+          const textEl = document.querySelector(`[data-editable="${key}"]`);
+          if (textEl) textEl.innerHTML = val;
+          const linkEl = document.querySelector(`[data-editable-link="${key}"]`);
+          if (linkEl) linkEl.href = val;
+          const imgEl = document.querySelector(`[data-editable-image="${key}"]`);
+          if (imgEl) {
+            imgEl.src = val;
+            imgEl.style.display = 'block';
+            const placeholder = imgEl.parentElement.querySelector('.placeholder-box');
+            if (placeholder) placeholder.style.display = 'none';
+          }
+        }
       }
       
     } catch (err) {
@@ -748,10 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
                    if (el.id) {
                      selector = `#${el.id}`;
                    } else {
-                     if (!el.hasAttribute('data-style-id')) {
-                       el.setAttribute('data-style-id', 'styled_' + Date.now());
-                     }
-                     selector = `[data-style-id="${el.getAttribute('data-style-id')}"]`;
+                     selector = getCssPath(el);
                    }
                    
                    const customCssStyle = document.getElementById('admin-custom-css');
@@ -1141,6 +1161,30 @@ document.addEventListener('DOMContentLoaded', () => {
   /* --- Admin Style Editor Logic --- */
   window.isMobileMode = false;
   
+  function getCssPath(el) {
+    if (!(el instanceof Element)) return '';
+    var path = [];
+    while (el.nodeType === Node.ELEMENT_NODE && el.tagName.toLowerCase() !== 'html') {
+      var selector = el.nodeName.toLowerCase();
+      if (el.id) {
+        selector += '#' + el.id;
+        path.unshift(selector);
+        break;
+      } else {
+        var sib = el, nth = 1;
+        while (sib = sib.previousElementSibling) {
+          if (sib.nodeName.toLowerCase() == selector)
+             nth++;
+        }
+        if (nth != 1 || el.nextElementSibling)
+          selector += ":nth-of-type("+nth+")";
+      }
+      path.unshift(selector);
+      el = el.parentNode;
+    }
+    return path.join(" > ");
+  }
+
   const adminToggleMobile = document.getElementById('adminToggleMobile');
   const adminStyleEditor = document.getElementById('adminStyleEditor');
   const customCssStyle = document.getElementById('admin-custom-css');
@@ -1215,7 +1259,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el) {
       el.addEventListener('input', (e) => {
         let currentCss = customCssStyle.innerHTML;
-        const rootRegex = /:root\s*{([^}]*)}/;
+        const prefix = currentTheme === 'dark' ? '[data-theme="dark"]' : '[data-theme="light"]';
+        const escapedPrefix = prefix.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+        const rootRegex = new RegExp(escapedPrefix + '\\s*{([^}]*)}');
+        
         let rootMatch = currentCss.match(rootRegex);
         let rootBlock = rootMatch ? rootMatch[1] : '';
         
@@ -1226,9 +1273,9 @@ document.addEventListener('DOMContentLoaded', () => {
         rootBlock += ` ${styleVars[idx]}: ${e.target.value} !important;`;
         
         if (rootMatch) {
-          customCssStyle.innerHTML = currentCss.replace(rootRegex, `:root {${rootBlock}}`);
+          customCssStyle.innerHTML = currentCss.replace(rootRegex, `${prefix} {${rootBlock}}`);
         } else {
-          customCssStyle.innerHTML = `:root {${rootBlock}}\n` + currentCss;
+          customCssStyle.innerHTML = `${prefix} {${rootBlock}}\n` + currentCss;
         }
       });
     }
@@ -1382,16 +1429,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentStyleTarget.id) {
           selector = `#${currentStyleTarget.id}`;
         } else {
-          if (!currentStyleTarget.hasAttribute('data-style-id')) {
-            currentStyleTarget.setAttribute('data-style-id', 'styled_' + Date.now());
-          }
-          selector = `[data-style-id="${currentStyleTarget.getAttribute('data-style-id')}"]`;
+          selector = getCssPath(currentStyleTarget);
         }
 
         let currentCss = customCssStyle.innerHTML;
-        let escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const themePrefix = currentTheme === 'dark' ? '[data-theme="dark"] ' : '[data-theme="light"] ';
+        let escapedThemePrefix = themePrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        let escapedSelector = escapedThemePrefix + selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
-        // Remove old single-property blocks for this selector and property
+        // Remove old single-property blocks for this selector and property under the current theme
         let regNormal = new RegExp(escapedSelector + '\\s*\\{\\s*' + input.prop + '\\s*:[^}]+?\\}', 'g');
         currentCss = currentCss.replace(regNormal, '');
         
@@ -1401,9 +1447,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // If a new value is provided, append it
         if (e.target.value) {
           if (window.isMobileMode) {
-            currentCss += `@media (max-width: 768px) { ${selector} { ${input.prop}: ${e.target.value} !important; } }\n`;
+            currentCss += `@media (max-width: 768px) { ${themePrefix}${selector} { ${input.prop}: ${e.target.value} !important; } }\n`;
           } else {
-            currentCss += `${selector} { ${input.prop}: ${e.target.value} !important; }\n`;
+            currentCss += `${themePrefix}${selector} { ${input.prop}: ${e.target.value} !important; }\n`;
           }
         }
         
